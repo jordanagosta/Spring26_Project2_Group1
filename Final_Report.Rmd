@@ -3,8 +3,10 @@ title: "NHIS 2021 Analysis"
 author: "Jordan Agosta, Lizbeth Ocampo, Lili Mora, Gabriela Quezada"
 date: "2026-04-19"
 output:
-  pdf_document: default
+  html_document:
+    df_print: paged
   word_document: default
+  pdf_document: default
 ---
 ````{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
@@ -47,7 +49,7 @@ nhis %>%
   ggplot(aes(x = HEIGHTTC_A, y = WEIGHTLBTC_A, color = SEX_A)) + geom_point(alpha = 0.30, size = 0.8) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 0.8) +
   facet_wrap(~ PHSTAT_A, nrow = 2) +
-  scale_color_manual(values = c("Male" = "#378ADD", "Female" = "#D4537E")) +
+  scale_color_manual(values = c("Male" = "blue", "Female" = "red")) +
   labs(x = "Height (inches)", y = "Weight (lbs)", color = "Sex",
        caption = "Source: NHIS 2021") +
   theme_minimal(base_size = 11) +
@@ -61,7 +63,7 @@ Figure 2 presents the Pearson correlation matrix for age, weight, and height. Th
 nhis %>%
   select(Age = AGEP_A, Weight = WEIGHTLBTC_A, Height = HEIGHTTC_A) %>%
   drop_na() %>%
-  pairs.panels(method = "pearson", hist.col = "#9FE1CB",
+  pairs.panels(method = "pearson", hist.col = "lightblue",
                density = TRUE, ellipses = TRUE, lm = TRUE,
                main = "") 
 ````
