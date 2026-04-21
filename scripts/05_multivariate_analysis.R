@@ -43,7 +43,7 @@ print(p1)
 ggsave("output/plot1_scatter_height_weight_sex_health.png",
        plot = p1, width = 10, height = 7, dpi = 300)
 
-# ── Plot 2: Correlation scatter plot matrix ───────────────────
+#Plot 2: Correlation scatter plot matrix
 # Age, weight, and height using pairs.panels()
 
 nhis_numeric <- nhis %>%
