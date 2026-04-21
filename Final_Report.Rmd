@@ -1,0 +1,73 @@
+---
+title: "NHIS 2021 Analysis"
+author: "Jordan Agosta, Lizbeth Ocampo, Lili Mora, Gabriela Quezada"
+date: "2026-04-19"
+output: word_document
+---
+````{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.width = 6.5, fig.height = 4.5, dpi = 300)
+
+library(tidyverse)
+library(psych)
+
+nhis <- read_csv("data/nhis_clean.csv") %>%
+  mutate(
+    SEX_A = factor(SEX_A, levels = c("Male", "Female")),
+    PHSTAT_A = factor(PHSTAT_A,
+                      levels = c("Excellent","Very good","Good","Fair","Poor"),
+                      ordered = TRUE),
+    EDUCP_A = factor(EDUCP_A,
+                     levels = c("Less than High School",
+                                "High School Graduate",
+                                "Some College",
+                                "College Graduate or better"))
+  )
+````
+
+# Introduction
+
+Physical health indicators such as body weight and height are widely used in public health research to monitor population health trends.The 2021 National Health Interview Survey (NHIS) provides a nationally representative sample of the U.S. population. This report presents a descriptive analysis of self-reported health variables from the 2021 NHIS.
+
+# Methods
+
+Data was drawn from the 2021 NHIS. The analytic sample consisted of 29,482 adult respondents after applying listwise deletion to remove cases with missing or non-response codes per codebook specifications. Variables of interest included age (AGEP_A), height in inches (HEIGHTTC_A), weight in pounds (WEIGHTLBTC_A), sex (SEX_A), education level (EDUCP_A), and general health status (PHSTAT_A). All analyses were conducted in R using the tidyverse and psych packages.
+
+# Results
+
+Figure 1 displays the relationship between height and weight stratified by sex and faceted by general health status. A positive association between height and weight was observed across all health categories. Males were consistently taller and heavier than females. Respondents reporting Fair or Poor health showed greater weight variability compared to those reporting Excellent or Very Good health.
+
+
+````{r plot1, fig.cap="Figure 1. Height vs. weight by sex and general health status."}
+nhis %>%
+  filter(!is.na(HEIGHTTC_A), !is.na(WEIGHTLBTC_A),
+         !is.na(SEX_A), !is.na(PHSTAT_A)) %>%
+  ggplot(aes(x = HEIGHTTC_A, y = WEIGHTLBTC_A, color = SEX_A)) + geom_point(alpha = 0.30, size = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.8) +
+  facet_wrap(~ PHSTAT_A, nrow = 2) +
+  scale_color_manual(values = c("Male" = "#378ADD", "Female" = "#D4537E")) +
+  labs(x = "Height (inches)", y = "Weight (lbs)", color = "Sex",
+       caption = "Source: NHIS 2021") +
+  theme_minimal(base_size = 11) +
+  theme(strip.text = element_text(face = "bold"),
+        legend.position = "bottom")
+````
+
+Figure 2 presents the Pearson correlation matrix for age, weight, and height. The correlation between height and weight was r = 0.50, indicating a moderate positive relationship. The correlations between age and weight (r = -0.02) and age and height (r = -0.09) were both weak.
+
+````{r plot2, fig.cap="Figure 2. Correlation matrix: age, weight, and height.", fig.width=5.5, fig.height=5.5}
+nhis %>%
+  select(Age = AGEP_A, Weight = WEIGHTLBTC_A, Height = HEIGHTTC_A) %>%
+  drop_na() %>%
+  pairs.panels(method = "pearson", hist.col = "#9FE1CB",
+               density = TRUE, ellipses = TRUE, lm = TRUE,
+               main = "") 
+````
+
+# Discussion
+
+The positive height–weight relationship was consistent across all health status groups, with greater dispersion observed in the Fair and Poor categories. This may reflect the role of obesity-related chronic conditions in poorer health outcomes. The weak correlations between age and both height and weight are expected, as height is largely stable in adulthood and weight changes modestly over the life course.
+
+# Conclusion
+
+This analysis of the 2021 NHIS provides a descriptive characterization of the relationships among height, weight, age, sex, and general health status in a nationally representative sample of U.S. adults. These findings establish a foundation for future multivariate analyses examining determinants of physical health after adjusting for sociodemographic confounders such as race/ethnicity,education, and income.
