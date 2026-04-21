@@ -2,7 +2,9 @@
 title: "NHIS 2021 Analysis"
 author: "Jordan Agosta, Lizbeth Ocampo, Lili Mora, Gabriela Quezada"
 date: "2026-04-19"
-output: word_document
+output:
+  pdf_document: default
+  word_document: default
 ---
 ````{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
@@ -66,8 +68,8 @@ nhis %>%
 
 # Discussion
 
-The positive height–weight relationship was consistent across all health status groups, with greater dispersion observed in the Fair and Poor categories. This may reflect the role of obesity-related chronic conditions in poorer health outcomes. The weak correlations between age and both height and weight are expected, as height is largely stable in adulthood and weight changes modestly over the life course.
+The positive height–weight relationship was consistent across all health status groups, with greater dispersion observed in the Fair and Poor categories. This may reflect the role of obesity-related chronic conditions in poorer health outcomes. The weak correlations between age and both height and weight are expected, as height is largely stable in adulthood and weight changes variably throughout life.
 
 # Conclusion
 
-This analysis of the 2021 NHIS provides a descriptive characterization of the relationships among height, weight, age, sex, and general health status in a nationally representative sample of U.S. adults. These findings establish a foundation for future multivariate analyses examining determinants of physical health after adjusting for sociodemographic confounders such as race/ethnicity,education, and income.
+This analysis of the 2021 NHIS provides a descriptive characterization of the relationships among height, weight, age, sex, and general health status in a nationally representative sample of U.S. adults. These findings establish a foundation for future multivariate analyses examining determinants of physical health after adjusting for confounders such as race/ethnicity, education, and income.
